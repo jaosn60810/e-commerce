@@ -1,4 +1,5 @@
 <template>
+  <Loading :active="isLoading" :z-index="1060"></Loading>
   <nav
     class="navbar navbar-expand-lg navbar-light justify-content-center border border-start-0 border-end-0 border-top border-bottom"
   >
@@ -57,6 +58,7 @@ export default {
   data() {
     return {
       products: [],
+      isLoading: false,
     };
   },
   mounted() {
@@ -64,6 +66,8 @@ export default {
   },
   methods: {
     getProducts() {
+      this.isLoading = true;
+
       const url = `${process.env.VUE_APP_API}/api/${process.env.VUE_APP_PATH}/products/all`;
       this.$http
         .get(url)
@@ -72,6 +76,9 @@ export default {
         })
         .catch((err) => {
           console.dir(err);
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
   },
